@@ -1,0 +1,7 @@
+{
+  "required": true,
+  "package": "de.lenna.fullbright.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "plugin": "de.lenna.fullbright.FullbrightMixinPlugin",
+  "injectors": {"defaultRequire": 1}
+}

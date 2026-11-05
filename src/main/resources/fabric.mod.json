@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "id": "always_fullbright",
+  "version": "1.1.0",
+  "name": "Always Fullbright",
+  "description": "Always-on Fullbright for Minecraft 1.21.11 and 26.1-26.3. Designed for Fabric with Sodium. No keybinds or configuration required.",
+  "authors": ["Lenna"],
+  "license": "MIT",
+  "icon": "assets/always_fullbright/icon.png",
+  "environment": "client",
+  "mixins": ["always-fullbright.mixins.json"],
+  "depends": {
+    "fabricloader": ">=0.19.5",
+    "minecraft": ["1.21.11", "26.1", "26.1.1", "26.1.2", "26.2", "26.3"],
+    "java": ">=21"
+  },
+  "suggests": {"sodium": "*"}
+}
