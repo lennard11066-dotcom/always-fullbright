@@ -25,7 +25,11 @@ for use alongside Sodium. No keybinds, settings menu or Fabric API dependency.
 | 26.1.2 | Fabric loader and modern lightmap hook tested |
 | 26.2 | Fabric loader and modern lightmap hook tested |
 | 26.3 | Fabric loader and modern lightmap hook tested; additional Sodium 0.9.2 loader check |
-| 26.1, 26.1.1 | Included in metadata; exact game binaries not separately tested |
+| 26.1, 26.1.1 | Fabric loader and modern lightmap hook tested in GitHub Actions |
+
+The automated workflow checks all six versions on Linux and Windows, with Java
+21 for 1.21.11 and Java 25 for 26.x. The initial successful run is linked
+[here](https://github.com/lennard11066-dotcom/always-fullbright/actions/runs/42104908317).
 
 Loader checks are not full graphical playtests. Shader packs that replace the
 lighting system may override the effect. Earlier Sodium releases were not
