@@ -1,0 +1,66 @@
+name: Build and verify
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: build-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build and test (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 25
+    steps:
+      - name: Check out source
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+      - name: Set up Python
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.13'
+      - name: Install Java 21 for the legacy runtime check
+        id: java21
+        uses: actions/setup-java@b6effb05e454b25005698d916606bdc6ffcbf961 # v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Install Java 25 for compilation and modern runtime checks
+        uses: actions/setup-java@b6effb05e454b25005698d916606bdc6ffcbf961 # v5
+        with:
+          distribution: temurin
+          java-version: '25'
+      - name: Test dependency download handling
+        run: python -m unittest discover -s tests -v
+      - name: Build universal JAR and check all supported Minecraft versions
+        env:
+          FULLBRIGHT_JAVA21_HOME: ${{ steps.java21.outputs.path }}
+        run: python build.py
+      - name: Upload tested mod JAR and checksum
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+        with:
+          name: Always-Fullbright-${{ matrix.os }}-${{ github.sha }}
+          path: build/libs/*
+          if-no-files-found: error
+          retention-days: 30
+      - name: Upload verification report and build logs
+        if: always()
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+        with:
+          name: Build-checks-${{ matrix.os }}-${{ github.sha }}
+          path: |
+            build/verification.json
+            build/work/**/*.log
+          if-no-files-found: ignore
+          retention-days: 7

@@ -59,7 +59,7 @@ public final class LoaderCheck {
             double gamma = 1 - Math.pow(1 - color, 4);
             if (gamma != 1.0) throw new AssertionError("Dark cell " + block + "," + sky);
         }
-        System.out.println("PASS: real Fabric loads packaged Minecraft 26.3 Mixin.");
+        System.out.println("PASS: real Fabric loads packaged Minecraft " + System.getProperty("fullbright.version", "26.3") + " Mixin.");
         System.out.println("PASS: transformed render hook re-applies fullbright on every call.");
         System.out.println("PASS: all 256 lightmap cells fullbright, including complete darkness.");
     }
